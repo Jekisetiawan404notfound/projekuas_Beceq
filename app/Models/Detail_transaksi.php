@@ -6,5 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Detail_transaksi extends Model
 {
-    //
+    protected $fillable = [
+        'transaksi_id',
+        'mobil_id',
+        'jumlah_beli',
+        'subtotal',
+        
+    ];
+
+    public function transaksi()
+    {
+        return $this->belongsTo(Transaksi::class);
+    }
+
+    public function mobil()
+    {
+        return $this->belongsTo(Mobil::class);
+    }
 }

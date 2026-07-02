@@ -1,4 +1,5 @@
 ## Alur Kerja Git (Git Workflow)
+abaikan yang branch karena kita hanya menggunakan 1 branch 
 
 ### Aturan Umum
 

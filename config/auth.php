@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\User;
+use App\Models\Admin;
+use App\Models\Pelanggan;
 
 return [
 
@@ -42,6 +44,16 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admins',
+        ],
+
+        'pelanggan' => [
+            'driver' => 'session',
+            'provider' => 'pelanggans',
+        ],
     ],
 
     /*
@@ -65,6 +77,16 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', User::class),
+        ],
+
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => Admin::class,
+        ],
+
+        'pelanggans' => [
+            'driver' => 'eloquent',
+            'model' => Pelanggan::class,
         ],
 
         // 'users' => [

@@ -59,7 +59,16 @@ abaikan yang branch karena kita hanya menggunakan 1 branch
    git checkout main
    git pull origin main
 ```
+# Git Branch Guide
 
-### Kalau Terjadi Conflict
+Panduan singkat untuk membuat dan mengelola branch di Git.
 
-1. Jangan panik, buka file yang bentrok, akan ada tanda seperti ini:
+## 📌 Apa itu Branch?
+Branch adalah cabang pengembangan dalam Git. Dengan branch, kita bisa bekerja pada fitur atau perbaikan bug tanpa mengganggu branch utama (`main` atau `master`).
+
+## 🚀 Membuat Branch Baru
+Gunakan perintah berikut:
+
+```bash
+git branch nama-branch
+

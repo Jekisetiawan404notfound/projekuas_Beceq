@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Transaksi extends Model
 {
-<<<<<<< HEAD
     protected $fillable = [
         'pelanggan_id',
         'admin_id',
@@ -29,7 +28,3 @@ class Transaksi extends Model
         return $this->hasMany(Detail_transaksi::class);
     }
 }
-=======
-    //
-} 
->>>>>>> 01d6d705bde9ad8b7dc0c78c84b1f8eb15875ebb

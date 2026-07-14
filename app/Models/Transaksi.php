@@ -6,12 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Transaksi extends Model
 {
-<<<<<<< HEAD
     protected $fillable = [
         'id_pelanggan',
-        'pelanggan_id', // support both
+        'pelanggan_id',
         'id_admin',
-        'admin_id', // support both
+        'admin_id',
         'tgl_transaksi',
         'total_bayar',
     ];
@@ -30,8 +29,25 @@ class Transaksi extends Model
     {
         return $this->hasMany(Detail_transaksi::class, 'id_transaksi', 'id_transaksi');
     }
+
+    // Alias Accessors & Mutators
+    public function getPelangganIdAttribute()
+    {
+        return $this->attributes['id_pelanggan'] ?? null;
+    }
+
+    public function setPelangganIdAttribute($value)
+    {
+        $this->attributes['id_pelanggan'] = $value;
+    }
+
+    public function getAdminIdAttribute()
+    {
+        return $this->attributes['id_admin'] ?? null;
+    }
+
+    public function setAdminIdAttribute($value)
+    {
+        $this->attributes['id_admin'] = $value;
+    }
 }
-=======
-    //
-} 
->>>>>>> 01d6d705bde9ad8b7dc0c78c84b1f8eb15875ebb

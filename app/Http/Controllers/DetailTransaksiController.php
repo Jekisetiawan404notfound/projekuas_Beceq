@@ -10,141 +10,146 @@ use Illuminate\Support\Facades\DB;
 
 class DetailTransaksiController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $details = Detail_transaksi::with(['transaksi', 'mobil'])->get();
-        return response()->json([
-            'success' => true,
-            'data' => $details
-        ], 200);
+        $details = Detail_transaksi::with(['transaksi.pelanggan', 'mobil'])->get();
+        return view('detail-transaksis.index', compact('details'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function create()
+    {
+        $transaksis = Transaksi::all();
+        $mobils = Mobil::all();
+        return view('detail-transaksis.create', compact('transaksis', 'mobils'));
+    }
+
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'transaksi_id' => 'required|exists:transaksis,id',
-            'mobil_id' => 'required|exists:mobils,id',
+        $request->validate([
+            'transaksi_id' => 'required',
+            'mobil_id' => 'required',
             'jumlah_beli' => 'required|integer|min:1',
         ]);
 
         try {
-            $detail = DB::transaction(function () use ($validated) {
-                $mobil = Mobil::find($validated['mobil_id']);
+            DB::transaction(function () use ($request) {
+                $mobil = Mobil::findOrFail($request->mobil_id);
 
-                if ($mobil->stok < $validated['jumlah_beli']) {
+                if ($mobil->stok < $request->jumlah_beli) {
                     throw new \Exception("Stok tidak mencukupi.");
                 }
 
-                $subtotal = $mobil->harga * $validated['jumlah_beli'];
+                $subtotal = $mobil->harga * $request->jumlah_beli;
 
                 // Deduct stock
-                $mobil->stok -= $validated['jumlah_beli'];
+                $mobil->stok -= $request->jumlah_beli;
                 $mobil->save();
 
                 // Create detail
-                $detail = Detail_transaksi::create([
-                    'transaksi_id' => $validated['transaksi_id'],
-                    'mobil_id' => $validated['mobil_id'],
-                    'jumlah_beli' => $validated['jumlah_beli'],
-                    'subtotal' => $subtotal
+                Detail_transaksi::create([
+                    'transaksi_id' => $request->transaksi_id,
+                    'mobil_id' => $request->mobil_id,
+                    'jumlah_beli' => $request->jumlah_beli,
+                    'subtotal' => $subtotal,
                 ]);
 
                 // Update total_bayar in Transaksi
-                $transaksi = Transaksi::find($validated['transaksi_id']);
+                $transaksi = Transaksi::findOrFail($request->transaksi_id);
                 $transaksi->total_bayar += $subtotal;
                 $transaksi->save();
-
-                return $detail;
             });
 
-            $detail->load(['transaksi', 'mobil']);
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Detail transaksi berhasil ditambahkan',
-                'data' => $detail
-            ], 210);
-
+            return redirect('/detail-transaksis');
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal menambahkan detail transaksi: ' . $e->getMessage()
-            ], 400);
+            return redirect()->back()->with('error', $e->getMessage())->withInput();
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit($id)
     {
-        $detail = Detail_transaksi::with(['transaksi', 'mobil'])->find($id);
-
-        if (!$detail) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Detail transaksi tidak ditemukan'
-            ], 404);
-        }
-
-        return response()->json([
-            'success' => true,
-            'data' => $detail
-        ], 200);
+        $detail = Detail_transaksi::findOrFail($id);
+        $transaksis = Transaksi::all();
+        $mobils = Mobil::all();
+        return view('detail-transaksis.edit', compact('detail', 'transaksis', 'mobils'));
     }
 
-    /**
-     * Remove the specified resource from storage (restores stock & updates transaction total).
-     */
-    public function destroy(string $id)
+    public function update(Request $request, $id)
     {
-        $detail = Detail_transaksi::find($id);
-
-        if (!$detail) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Detail transaksi tidak ditemukan'
-            ], 404);
-        }
+        $request->validate([
+            'transaksi_id' => 'required',
+            'mobil_id' => 'required',
+            'jumlah_beli' => 'required|integer|min:1',
+        ]);
 
         try {
-            DB::transaction(function () use ($detail) {
-                // Restore stock
-                $mobil = Mobil::find($detail->mobil_id);
-                if ($mobil) {
-                    $mobil->stok += $detail->jumlah_beli;
-                    $mobil->save();
+            DB::transaction(function () use ($request, $id) {
+                $detail = Detail_transaksi::findOrFail($id);
+                $mobilBaru = Mobil::findOrFail($request->mobil_id);
+                $mobilLama = Mobil::find($detail->mobil_id);
+
+                // Kembalikan stok mobil lama
+                if ($mobilLama) {
+                    $mobilLama->stok += $detail->jumlah_beli;
+                    $mobilLama->save();
                 }
 
-                // Update transaction total_bayar
-                $transaksi = Transaksi::find($detail->transaksi_id);
-                if ($transaksi) {
-                    $transaksi->total_bayar -= $detail->subtotal;
-                    if ($transaksi->total_bayar < 0) {
-                        $transaksi->total_bayar = 0;
-                    }
-                    $transaksi->save();
+                // Cek stok mobil baru
+                if ($mobilBaru->stok < $request->jumlah_beli) {
+                    throw new \Exception("Stok tidak mencukupi.");
                 }
 
-                $detail->delete();
+                // Kurangi stok mobil baru
+                $mobilBaru->stok -= $request->jumlah_beli;
+                $mobilBaru->save();
+
+                $subtotalBaru = $mobilBaru->harga * $request->jumlah_beli;
+                $selisih = $subtotalBaru - $detail->subtotal;
+
+                // Update detail
+                $detail->update([
+                    'transaksi_id' => $request->transaksi_id,
+                    'mobil_id' => $request->mobil_id,
+                    'jumlah_beli' => $request->jumlah_beli,
+                    'subtotal' => $subtotalBaru,
+                ]);
+
+                // Update total_bayar di Transaksi
+                $transaksi = Transaksi::findOrFail($request->transaksi_id);
+                $transaksi->total_bayar += $selisih;
+                $transaksi->save();
             });
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Detail transaksi berhasil dihapus, stok dikembalikan, dan total bayar transaksi diperbarui'
-            ], 200);
-
+            return redirect('/detail-transaksis');
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal menghapus detail transaksi: ' . $e->getMessage()
-            ], 400);
+            return redirect()->back()->with('error', $e->getMessage())->withInput();
         }
+    }
+
+    public function destroy($id)
+    {
+        $detail = Detail_transaksi::findOrFail($id);
+
+        DB::transaction(function () use ($detail) {
+            // Restore stock
+            $mobil = Mobil::find($detail->mobil_id);
+            if ($mobil) {
+                $mobil->stok += $detail->jumlah_beli;
+                $mobil->save();
+            }
+
+            // Update transaction total_bayar
+            $transaksi = Transaksi::find($detail->transaksi_id);
+            if ($transaksi) {
+                $transaksi->total_bayar -= $detail->subtotal;
+                if ($transaksi->total_bayar < 0) {
+                    $transaksi->total_bayar = 0;
+                }
+                $transaksi->save();
+            }
+
+            $detail->delete();
+        });
+
+        return redirect('/detail-transaksis');
     }
 }

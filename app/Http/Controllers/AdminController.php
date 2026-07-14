@@ -8,111 +8,55 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $admins = Admin::all();
-        return response()->json([
-            'success' => true,
-            'data' => $admins
-        ], 200);
+        return view('admins.index', compact('admins'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function create()
+    {
+        return view('admins.create');
+    }
+
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'username' => 'required|string|unique:admins,username|max:255',
-            'password' => 'required|string|min:6',
+        Admin::create([
+            'username' => $request->username,
+            'password' => Hash::make($request->password),
         ]);
 
-        $admin = Admin::create([
-            'username' => $validated['username'],
-            'password' => Hash::make($validated['password']),
-        ]);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Admin berhasil ditambahkan',
-            'data' => $admin
-        ], 210);
+        return redirect('/admins');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit($id)
     {
-        $admin = Admin::find($id);
-
-        if (!$admin) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Admin tidak ditemukan'
-            ], 404);
-        }
-
-        return response()->json([
-            'success' => true,
-            'data' => $admin
-        ], 200);
+        $admin = Admin::findOrFail($id);
+        return view('admins.edit', compact('admin'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        $admin = Admin::find($id);
+        $admin = Admin::findOrFail($id);
+        
+        $data = [
+            'username' => $request->username,
+        ];
 
-        if (!$admin) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Admin tidak ditemukan'
-            ], 404);
+        if ($request->filled('password')) {
+            $data['password'] = Hash::make($request->password);
         }
 
-        $validated = $request->validate([
-            'username' => 'sometimes|required|string|unique:admins,username,' . $id . '|max:255',
-            'password' => 'sometimes|required|string|min:6',
-        ]);
+        $admin->update($data);
 
-        if (isset($validated['password'])) {
-            $validated['password'] = Hash::make($validated['password']);
-        }
-
-        $admin->update($validated);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Admin berhasil diperbarui',
-            'data' => $admin
-        ], 200);
+        return redirect('/admins');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        $admin = Admin::find($id);
-
-        if (!$admin) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Admin tidak ditemukan'
-            ], 404);
-        }
-
+        $admin = Admin::findOrFail($id);
         $admin->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Admin berhasil dihapus'
-        ], 200);
+        return redirect('/admins');
     }
 }

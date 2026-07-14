@@ -3,116 +3,62 @@
 namespace App\Http\Controllers;
 
 use App\Models\Mobil;
+use App\Models\Kategori_mobil;
 use Illuminate\Http\Request;
 
 class MobilController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $mobils = Mobil::with('kategori')->get();
-        return response()->json([
-            'success' => true,
-            'data' => $mobils
-        ], 200);
+        return view('mobils.index', compact('mobils'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function create()
+    {
+        $kategoris = Kategori_mobil::all();
+        return view('mobils.create', compact('kategoris'));
+    }
+
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'kategori_id' => 'required|exists:kategori_mobils,id',
-            'merek' => 'required|string|max:255',
-            'model' => 'required|string|max:255',
-            'harga' => 'required|numeric|min:0',
-            'stok' => 'required|integer|min:0',
+        Mobil::create([
+            'kategori_id' => $request->kategori_id,
+            'merek' => $request->merek,
+            'model' => $request->model,
+            'harga' => $request->harga,
+            'stok' => $request->stok,
         ]);
 
-        $mobil = Mobil::create($validated);
-        $mobil->load('kategori');
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Mobil berhasil ditambahkan',
-            'data' => $mobil
-        ], 210);
+        return redirect('/mobils');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit($id)
     {
-        $mobil = Mobil::with('kategori')->find($id);
-
-        if (!$mobil) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Mobil tidak ditemukan'
-            ], 404);
-        }
-
-        return response()->json([
-            'success' => true,
-            'data' => $mobil
-        ], 200);
+        $mobil = Mobil::findOrFail($id);
+        $kategoris = Kategori_mobil::all();
+        return view('mobils.edit', compact('mobil', 'kategoris'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        $mobil = Mobil::find($id);
-
-        if (!$mobil) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Mobil tidak ditemukan'
-            ], 404);
-        }
-
-        $validated = $request->validate([
-            'kategori_id' => 'sometimes|required|exists:kategori_mobils,id',
-            'merek' => 'sometimes|required|string|max:255',
-            'model' => 'sometimes|required|string|max:255',
-            'harga' => 'sometimes|required|numeric|min:0',
-            'stok' => 'sometimes|required|integer|min:0',
+        $mobil = Mobil::findOrFail($id);
+        $mobil->update([
+            'kategori_id' => $request->kategori_id,
+            'merek' => $request->merek,
+            'model' => $request->model,
+            'harga' => $request->harga,
+            'stok' => $request->stok,
         ]);
 
-        $mobil->update($validated);
-        $mobil->load('kategori');
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Mobil berhasil diperbarui',
-            'data' => $mobil
-        ], 200);
+        return redirect('/mobils');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        $mobil = Mobil::find($id);
-
-        if (!$mobil) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Mobil tidak ditemukan'
-            ], 404);
-        }
-
+        $mobil = Mobil::findOrFail($id);
         $mobil->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Mobil berhasil dihapus'
-        ], 200);
+        return redirect('/mobils');
     }
 }

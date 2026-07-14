@@ -7,102 +7,47 @@ use Illuminate\Http\Request;
 
 class KategoriMobilController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $kategori = Kategori_mobil::all();
-        return response()->json([
-            'success' => true,
-            'data' => $kategori
-        ], 200);
+        $kategoris = Kategori_mobil::all();
+        return view('kategori-mobils.index', compact('kategoris'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function create()
+    {
+        return view('kategori-mobils.create');
+    }
+
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'nama_kategori' => 'required|string|max:255|unique:kategori_mobils,nama_kategori',
+        Kategori_mobil::create([
+            'nama_kategori' => $request->nama_kategori,
         ]);
 
-        $kategori = Kategori_mobil::create($validated);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Kategori mobil berhasil ditambahkan',
-            'data' => $kategori
-        ], 210);
+        return redirect('/kategori-mobils');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit($id)
     {
-        $kategori = Kategori_mobil::with('mobils')->find($id);
-
-        if (!$kategori) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Kategori mobil tidak ditemukan'
-            ], 404);
-        }
-
-        return response()->json([
-            'success' => true,
-            'data' => $kategori
-        ], 200);
+        $kategori = Kategori_mobil::findOrFail($id);
+        return view('kategori-mobils.edit', compact('kategori'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        $kategori = Kategori_mobil::find($id);
-
-        if (!$kategori) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Kategori mobil tidak ditemukan'
-            ], 404);
-        }
-
-        $validated = $request->validate([
-            'nama_kategori' => 'required|string|max:255|unique:kategori_mobils,nama_kategori,' . $id,
+        $kategori = Kategori_mobil::findOrFail($id);
+        $kategori->update([
+            'nama_kategori' => $request->nama_kategori,
         ]);
 
-        $kategori->update($validated);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Kategori mobil berhasil diperbarui',
-            'data' => $kategori
-        ], 200);
+        return redirect('/kategori-mobils');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        $kategori = Kategori_mobil::find($id);
-
-        if (!$kategori) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Kategori mobil tidak ditemukan'
-            ], 404);
-        }
-
+        $kategori = Kategori_mobil::findOrFail($id);
         $kategori->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Kategori mobil berhasil dihapus'
-        ], 200);
+        return redirect('/kategori-mobils');
     }
 }

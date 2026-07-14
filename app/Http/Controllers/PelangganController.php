@@ -7,106 +7,51 @@ use Illuminate\Http\Request;
 
 class PelangganController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $pelanggans = Pelanggan::all();
-        return response()->json([
-            'success' => true,
-            'data' => $pelanggans
-        ], 200);
+        return view('pelanggans.index', compact('pelanggans'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function create()
+    {
+        return view('pelanggans.create');
+    }
+
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'nama' => 'required|string|max:255',
-            'alamat' => 'required|string|max:255',
-            'no_telepon' => 'required|string|max:20',
+        Pelanggan::create([
+            'nama' => $request->nama,
+            'alamat' => $request->alamat,
+            'no_telepon' => $request->no_telepon,
         ]);
 
-        $pelanggan = Pelanggan::create($validated);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Pelanggan berhasil ditambahkan',
-            'data' => $pelanggan
-        ], 210);
+        return redirect('/pelanggans');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit($id)
     {
-        $pelanggan = Pelanggan::find($id);
-
-        if (!$pelanggan) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Pelanggan tidak ditemukan'
-            ], 404);
-        }
-
-        return response()->json([
-            'success' => true,
-            'data' => $pelanggan
-        ], 200);
+        $pelanggan = Pelanggan::findOrFail($id);
+        return view('pelanggans.edit', compact('pelanggan'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        $pelanggan = Pelanggan::find($id);
-
-        if (!$pelanggan) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Pelanggan tidak ditemukan'
-            ], 404);
-        }
-
-        $validated = $request->validate([
-            'nama' => 'sometimes|required|string|max:255',
-            'alamat' => 'sometimes|required|string|max:255',
-            'no_telepon' => 'sometimes|required|string|max:20',
+        $pelanggan = Pelanggan::findOrFail($id);
+        $pelanggan->update([
+            'nama' => $request->nama,
+            'alamat' => $request->alamat,
+            'no_telepon' => $request->no_telepon,
         ]);
 
-        $pelanggan->update($validated);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Pelanggan berhasil diperbarui',
-            'data' => $pelanggan
-        ], 200);
+        return redirect('/pelanggans');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        $pelanggan = Pelanggan::find($id);
-
-        if (!$pelanggan) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Pelanggan tidak ditemukan'
-            ], 404);
-        }
-
+        $pelanggan = Pelanggan::findOrFail($id);
         $pelanggan->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Pelanggan berhasil dihapus'
-        ], 200);
+        return redirect('/pelanggans');
     }
 }

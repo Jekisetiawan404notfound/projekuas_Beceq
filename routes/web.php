@@ -7,14 +7,25 @@ use App\Http\Controllers\KategoriMobilController;
 use App\Http\Controllers\MobilController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\DetailTransaksiController;
+use App\Models\Admin;
+use App\Models\Pelanggan;
+use App\Models\Mobil;
+use App\Models\Transaksi;
 
 Route::get('/', function () {
-    return view('welcome');
+    $totalAdmins = Admin::count();
+    $totalPelanggans = Pelanggan::count();
+    $totalMobils = Mobil::count();
+    $totalTransaksis = Transaksi::count();
+    $totalPendapatan = Transaksi::sum('total_bayar');
+    $recentTransaksis = Transaksi::with(['pelanggan', 'admin'])->latest()->take(5)->get();
+
+    return view('dashboard', compact('totalAdmins', 'totalPelanggans', 'totalMobils', 'totalTransaksis', 'totalPendapatan', 'recentTransaksis'));
 });
 
-Route::apiResource('admins', AdminController::class);
-Route::apiResource('pelanggans', PelangganController::class);
-Route::apiResource('kategori-mobils', KategoriMobilController::class);
-Route::apiResource('mobils', MobilController::class);
-Route::apiResource('transaksis', TransaksiController::class);
-Route::apiResource('detail-transaksis', DetailTransaksiController::class);
+Route::resource('admins', AdminController::class);
+Route::resource('pelanggans', PelangganController::class);
+Route::resource('kategori-mobils', KategoriMobilController::class);
+Route::resource('mobils', MobilController::class);
+Route::resource('transaksis', TransaksiController::class);
+Route::resource('detail-transaksis', DetailTransaksiController::class);

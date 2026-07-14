@@ -5,110 +5,156 @@
 @section('page-subtitle', 'Ringkasan aktivitas rental mobil Beceq Rent')
 
 @section('content')
-<div class="dashboard-overview">
-    
-    <!-- ── STATISTIK UTAMA ── -->
-    <div class="stats-grid">
-        <!-- Pendapatan -->
-        <div class="stat-card">
-            <div class="stat-info">
-                <span class="label">Total Pendapatan</span>
-                <div class="value" id="stat-revenue">Rp {{ number_format($totalPendapatan, 0, ',', '.') }}</div>
-            </div>
-            <div class="stat-icon-wrapper" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">
-                💰
-            </div>
-        </div>
 
-        <!-- Transaksi -->
-        <div class="stat-card">
-            <div class="stat-info">
-                <span class="label">Total Transaksi</span>
-                <div class="value" id="stat-transactions">{{ $totalTransaksis }}</div>
-            </div>
-            <div class="stat-icon-wrapper" style="background: rgba(79, 70, 229, 0.15); color: #6366f1;">
-                🧾
-            </div>
-        </div>
+<!-- Content Row - Stats Cards -->
+<div class="row">
 
-        <!-- Mobil -->
-        <div class="stat-card">
-            <div class="stat-info">
-                <span class="label">Armada Mobil</span>
-                <div class="value">{{ $totalMobils }}</div>
-            </div>
-            <div class="stat-icon-wrapper" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">
-                🚗
-            </div>
-        </div>
-
-        <!-- Pelanggan -->
-        <div class="stat-card">
-            <div class="stat-info">
-                <span class="label">Pelanggan</span>
-                <div class="value">{{ $totalPelanggans }}</div>
-            </div>
-            <div class="stat-icon-wrapper" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">
-                👥
+    <!-- Pendapatan Card -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Pendapatan</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="stat-revenue">
+                            Rp {{ number_format($totalPendapatan, 0, ',', '.') }}
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- ── DUA KOLOM: GRAFIK & KONTROL SIMULASI ── -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-bottom: 24px;">
-        <!-- Card Grafik -->
-        <div class="card" style="margin-bottom: 0;">
-            <div class="card-header">
-                <span class="card-title">📈 Tren Pendapatan & Transaksi</span>
-                <!-- Filter Tanggal -->
-                <div style="display: flex; gap: 6px;">
-                    <button class="btn btn-outline btn-sm filter-btn active" onclick="updateChartPeriod('daily', this)">Harian</button>
-                    <button class="btn btn-outline btn-sm filter-btn" onclick="updateChartPeriod('weekly', this)">Mingguan</button>
-                    <button class="btn btn-outline btn-sm filter-btn" onclick="updateChartPeriod('monthly', this)">Bulanan</button>
+    <!-- Transaksi Card -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Transaksi</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="stat-transactions">
+                            {{ $totalTransaksis }}
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-file-invoice fa-2x text-gray-300"></i>
+                    </div>
                 </div>
             </div>
-            <div class="card-body" style="position: relative; height: 320px;">
-                <canvas id="salesChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Armada Mobil Card -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Armada Mobil</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalMobils }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-car fa-2x text-gray-300"></i>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
 
-        <!-- Card Aksi Interaktif & Simulator -->
-        <div class="card" style="margin-bottom: 0;">
-            <div class="card-header">
-                <span class="card-title">⚡ Simulator & Kontrol Interaktif</span>
+    <!-- Pelanggan Card -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-info shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Pelanggan</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalPelanggans }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-users fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Content Row - Chart & Simulator -->
+<div class="row">
+
+    <!-- Chart Area -->
+    <div class="col-xl-8 col-lg-7">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <i class="fas fa-chart-line mr-2"></i>Tren Pendapatan &amp; Transaksi
+                </h6>
+                <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                        aria-labelledby="dropdownMenuLink">
+                        <div class="dropdown-header">Filter Periode:</div>
+                        <a class="dropdown-item filter-btn" href="#" onclick="updateChartPeriod('daily', this); return false;">Harian</a>
+                        <a class="dropdown-item filter-btn" href="#" onclick="updateChartPeriod('weekly', this); return false;">Mingguan</a>
+                        <a class="dropdown-item filter-btn" href="#" onclick="updateChartPeriod('monthly', this); return false;">Bulanan</a>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
-                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
-                    Uji fungsionalitas UI dashboard secara interaktif tanpa perlu input manual di database.
+                <div class="chart-area" style="height: 320px;">
+                    <canvas id="salesChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Simulator Card -->
+    <div class="col-xl-4 col-lg-5">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <i class="fas fa-bolt mr-2"></i>Simulator &amp; Kontrol
+                </h6>
+            </div>
+            <div class="card-body">
+                <p class="text-muted small mb-3">
+                    Uji fungsionalitas UI dashboard secara interaktif.
                 </p>
 
-                <!-- Tombol Simulasi Notifikasi -->
-                <div style="margin-bottom: 16px; padding: 14px; border: 1px solid var(--border-color); border-radius: 12px; background: rgba(79, 70, 229, 0.03);">
-                    <div style="font-size: 14px; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">
-                        <span>🔔</span> Simulasikan Transaksi Masuk
-                    </div>
-                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">
-                        Kirim notifikasi real-time transaksi baru ke dashboard secara instan.
+                <!-- Simulasi Notifikasi -->
+                <div class="p-3 mb-3 rounded border bg-light">
+                    <p class="font-weight-bold mb-1 small">
+                        <i class="fas fa-bell text-primary mr-1"></i> Simulasikan Transaksi Masuk
+                    </p>
+                    <p class="text-muted small mb-2">
+                        Kirim notifikasi real-time transaksi baru ke dashboard.
                     </p>
                     <button class="btn btn-primary btn-sm" onclick="simulateNewOrder()">
-                        Simulasikan Pesanan
+                        <i class="fas fa-play mr-1"></i> Simulasikan Pesanan
                     </button>
                 </div>
 
-                <!-- Tombol Ekspor Laporan -->
-                <div style="padding: 14px; border: 1px solid var(--border-color); border-radius: 12px; background: rgba(16, 185, 129, 0.03);">
-                    <div style="font-size: 14px; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">
-                        <span>📥</span> Unduh Laporan Kinerja
-                    </div>
-                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">
-                        Ekspor ringkasan penjualan armada saat ini menjadi file digital (Excel/PDF).
+                <!-- Ekspor Laporan -->
+                <div class="p-3 rounded border bg-light">
+                    <p class="font-weight-bold mb-1 small">
+                        <i class="fas fa-download text-success mr-1"></i> Unduh Laporan Kinerja
                     </p>
-                    <div style="display: flex; gap: 8px;">
-                        <button class="btn btn-warning btn-sm" onclick="exportReport('PDF')">
-                            📄 Ekspor ke PDF
+                    <p class="text-muted small mb-2">
+                        Ekspor ringkasan penjualan armada saat ini.
+                    </p>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-warning btn-sm mr-2" onclick="exportReport('PDF')">
+                            <i class="fas fa-file-pdf mr-1"></i> PDF
                         </button>
-                        <button class="btn btn-outline btn-sm" onclick="exportReport('Excel')" style="border-color: rgba(16, 185, 129, 0.3); color: #10b981;">
-                            📊 Ekspor ke Excel
+                        <button class="btn btn-success btn-sm" onclick="exportReport('Excel')">
+                            <i class="fas fa-file-excel mr-1"></i> Excel
                         </button>
                     </div>
                 </div>
@@ -116,67 +162,81 @@
         </div>
     </div>
 
-    <!-- ── TABEL TRANSAKSI TERBARU ── -->
-    <div class="card">
-        <div class="card-header">
-            <span class="card-title">⏱️ Transaksi Sewa Terbaru</span>
-            <a href="{{ route('transaksis.index') }}" class="btn btn-outline btn-sm">Lihat Semua</a>
-        </div>
-        <div class="table-responsive">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Pelanggan</th>
-                        <th>Tanggal Transaksi</th>
-                        <th>Total Bayar</th>
-                        <th>Petugas Admin</th>
-                        <th width="150">Status</th>
-                    </tr>
-                </thead>
-                <tbody id="transactions-table-body">
-                    @forelse($recentTransaksis as $trx)
-                    <tr>
-                        <td>
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <div class="avatar" style="width: 28px; height: 28px; font-size: 11px; font-weight: 700;">
-                                    {{ strtoupper(substr($trx->pelanggan->nama ?? 'P', 0, 1)) }}
-                                </div>
-                                <span style="font-weight: 600;">{{ $trx->pelanggan->nama ?? 'Pelanggan Umum' }}</span>
-                            </div>
-                        </td>
-                        <td>{{ \Carbon\Carbon::parse($trx->tgl_transaksi)->translatedFormat('d F Y') }}</td>
-                        <td style="font-weight: 700; color: var(--primary);">
-                            Rp {{ number_format($trx->total_bayar, 0, ',', '.') }}
-                        </td>
-                        <td>
-                            <span style="font-size: 13px; color: var(--text-muted);">
-                                👤 {{ $trx->admin->nama ?? ($trx->admin->username ?? 'Admin') }}
-                            </span>
-                        </td>
-                        <td>
-                            <span class="badge badge-success">Selesai</span>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="5" style="text-align: center; padding: 40px; color: var(--text-muted);">
-                            Belum ada transaksi rental tercatat.
-                        </td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
+</div>
+
+<!-- Content Row - Tabel Transaksi Terbaru -->
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <i class="fas fa-clock mr-2"></i>Transaksi Sewa Terbaru
+                </h6>
+                <a href="{{ route('transaksis.index') }}" class="btn btn-sm btn-outline-primary">
+                    Lihat Semua <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" width="100%" cellspacing="0">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Pelanggan</th>
+                                <th>Tanggal Transaksi</th>
+                                <th>Total Bayar</th>
+                                <th>Petugas Admin</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactions-table-body">
+                            @forelse($recentTransaksis as $trx)
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="icon-circle bg-primary mr-2" style="width:32px;height:32px;">
+                                            <span class="text-white font-weight-bold small">
+                                                {{ strtoupper(substr($trx->pelanggan->nama ?? 'P', 0, 1)) }}
+                                            </span>
+                                        </div>
+                                        <span class="font-weight-bold">{{ $trx->pelanggan->nama ?? 'Pelanggan Umum' }}</span>
+                                    </div>
+                                </td>
+                                <td>{{ \Carbon\Carbon::parse($trx->tgl_transaksi)->translatedFormat('d F Y') }}</td>
+                                <td class="font-weight-bold text-success">
+                                    Rp {{ number_format($trx->total_bayar, 0, ',', '.') }}
+                                </td>
+                                <td class="text-muted small">
+                                    <i class="fas fa-user mr-1"></i>
+                                    {{ $trx->admin->nama ?? ($trx->admin->username ?? 'Admin') }}
+                                </td>
+                                <td>
+                                    <span class="badge badge-success">Selesai</span>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="5" class="text-center py-4 text-muted">
+                                    <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
+                                    Belum ada transaksi rental tercatat.
+                                </td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
 @endsection
 
 @push('scripts')
+<script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script>
 <script>
     // --- 1. INITIALIZE CHART ---
     const ctx = document.getElementById('salesChart').getContext('2d');
-    
-    // Dataset Mock untuk filter periode
+
     const chartDataSets = {
         daily: {
             labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
@@ -195,19 +255,6 @@
         }
     };
 
-    // Deteksi warna berdasarkan tema
-    function getChartThemeColors() {
-        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        return {
-            text: isDark ? '#9ca3af' : '#64748b',
-            grid: isDark ? '#1f2937' : '#e2e8f0',
-            primary: '#6366f1',
-            success: '#10b981'
-        };
-    }
-
-    let colors = getChartThemeColors();
-
     const salesChart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -216,8 +263,8 @@
                 {
                     label: 'Pendapatan (Rp)',
                     data: chartDataSets.daily.revenue,
-                    borderColor: colors.success,
-                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    borderColor: '#1cc88a',
+                    backgroundColor: 'rgba(28, 200, 138, 0.1)',
                     borderWidth: 3,
                     fill: true,
                     tension: 0.4,
@@ -226,8 +273,8 @@
                 {
                     label: 'Jumlah Sewa Mobil',
                     data: chartDataSets.daily.rentals,
-                    borderColor: colors.primary,
-                    backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                    borderColor: '#4e73df',
+                    backgroundColor: 'rgba(78, 115, 223, 0.1)',
                     borderWidth: 3,
                     fill: true,
                     tension: 0.4,
@@ -239,29 +286,18 @@
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-                legend: {
-                    position: 'top',
-                    labels: {
-                        color: colors.text,
-                        font: { family: 'Plus Jakarta Sans', weight: '600' }
-                    }
-                }
+                legend: { position: 'top' }
             },
             scales: {
-                x: {
-                    grid: { color: colors.grid },
-                    ticks: { color: colors.text }
-                },
+                x: { grid: { color: '#eaecf4' }, ticks: { color: '#858796' } },
                 y: {
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    grid: { color: colors.grid },
+                    grid: { color: '#eaecf4' },
                     ticks: {
-                        color: colors.text,
-                        callback: function(value) {
-                            return 'Rp ' + value.toLocaleString();
-                        }
+                        color: '#858796',
+                        callback: function(value) { return 'Rp ' + value.toLocaleString(); }
                     }
                 },
                 y1: {
@@ -269,30 +305,14 @@
                     display: true,
                     position: 'right',
                     grid: { drawOnChartArea: false },
-                    ticks: { color: colors.text }
+                    ticks: { color: '#858796' }
                 }
             }
         }
     });
 
-    // Perbarui chart saat tema berganti
-    const observer = new MutationObserver(() => {
-        const newColors = getChartThemeColors();
-        salesChart.options.plugins.legend.labels.color = newColors.text;
-        salesChart.options.scales.x.ticks.color = newColors.text;
-        salesChart.options.scales.x.grid.color = newColors.grid;
-        salesChart.options.scales.y.ticks.color = newColors.text;
-        salesChart.options.scales.y.grid.color = newColors.grid;
-        salesChart.options.scales.y1.ticks.color = newColors.text;
-        salesChart.update();
-    });
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-
     // --- 2. UPDATE CHART PERIOD ---
     window.updateChartPeriod = function(period, element) {
-        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-        element.classList.add('active');
-
         const selectedData = chartDataSets[period];
         salesChart.data.labels = selectedData.labels;
         salesChart.data.datasets[0].data = selectedData.revenue;
@@ -302,83 +322,57 @@
 
     // --- 3. EXPORT REPORT SIMULATION ---
     window.exportReport = function(type) {
-        showToast('Ekspor Laporan', `Sedang mempersiapkan data ekspor ${type}...`, '⏳');
+        toastr.info(`Sedang mempersiapkan data ekspor ${type}...`, 'Ekspor Laporan');
         setTimeout(() => {
-            showToast('Berhasil', `Laporan Beceq Rent berformat ${type} telah diunduh ke perangkat Anda.`, '✅');
+            toastr.success(`Laporan Beceq Rent berformat ${type} telah diunduh!`, 'Berhasil');
         }, 1500);
     };
 
     // --- 4. SIMULATE NEW ORDER ---
     let orderCount = 0;
     const names = ['Andi Saputra', 'Budi Wijaya', 'Siti Rahma', 'Dewi Lestari', 'Joko Susilo'];
-    const mobils = ['Avanza Veloz', 'Honda Civic Type-R', 'Toyota Alphard', 'Mitsubishi Xpander', 'Hyundai Ioniq 5'];
+    const mobils = ['Avanza Veloz', 'Honda Civic', 'Toyota Alphard', 'Mitsubishi Xpander', 'Hyundai Ioniq 5'];
 
     window.simulateNewOrder = function() {
         orderCount++;
         const randomName = names[Math.floor(Math.random() * names.length)];
         const randomMobil = mobils[Math.floor(Math.random() * mobils.length)];
         const price = Math.floor((Math.random() * 5 + 3)) * 150000;
-        
-        // Panggil sistem layout notification
-        if(typeof window.triggerNewOrderNotification === 'function') {
-            window.triggerNewOrderNotification(
-                'Pesanan Masuk 🚗',
-                `${randomName} menyewa ${randomMobil} senilai Rp ${price.toLocaleString('id-ID')}`,
-                '🎉'
-            );
-        }
 
-        // Perbarui visual stats secara instan
+        // Update stats
         const revenueEl = document.getElementById('stat-revenue');
         const transactionsEl = document.getElementById('stat-transactions');
-        
-        // Update total transaksi
         let currentTrxCount = parseInt(transactionsEl.textContent) || 0;
         transactionsEl.textContent = currentTrxCount + 1;
-
-        // Update total bayar
         let currentRevText = revenueEl.textContent.replace('Rp ', '').replace(/\./g, '');
         let currentRev = parseInt(currentRevText) || 0;
         let newRev = currentRev + price;
         revenueEl.textContent = 'Rp ' + newRev.toLocaleString('id-ID');
 
-        // Tambah baris ke tabel transaksi terbaru
+        // Add row to table
         const tableBody = document.getElementById('transactions-table-body');
-        const emptyTr = tableBody.querySelector('td[colspan]');
-        if(emptyTr) {
-            tableBody.innerHTML = '';
-        }
-
+        const emptyCell = tableBody.querySelector('td[colspan]');
+        if (emptyCell) { tableBody.innerHTML = ''; }
         const dateStr = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
         const newRow = document.createElement('tr');
         newRow.innerHTML = `
             <td>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <div class="avatar" style="width: 28px; height: 28px; font-size: 11px; font-weight: 700;">
-                        ${randomName.substring(0, 1).toUpperCase()}
+                <div class="d-flex align-items-center">
+                    <div class="icon-circle bg-primary mr-2" style="width:32px;height:32px;">
+                        <span class="text-white font-weight-bold small">${randomName.substring(0, 1).toUpperCase()}</span>
                     </div>
-                    <span style="font-weight: 600;">${randomName}</span>
+                    <span class="font-weight-bold">${randomName}</span>
                 </div>
             </td>
             <td>${dateStr}</td>
-            <td style="font-weight: 700; color: var(--primary);">
-                Rp ${price.toLocaleString('id-ID')}
-            </td>
-            <td>
-                <span style="font-size: 13px; color: var(--text-muted);">
-                    👤 Administrator (Sim)
-                </span>
-            </td>
-            <td>
-                <span class="badge badge-warning">Diproses</span>
-            </td>
+            <td class="font-weight-bold text-success">Rp ${price.toLocaleString('id-ID')}</td>
+            <td class="text-muted small"><i class="fas fa-user mr-1"></i> Administrator (Sim)</td>
+            <td><span class="badge badge-warning">Diproses</span></td>
         `;
         tableBody.insertBefore(newRow, tableBody.firstChild);
+        if (tableBody.children.length > 6) { tableBody.lastChild.remove(); }
 
-        // Limit table to 6 entries
-        if(tableBody.children.length > 6) {
-            tableBody.lastChild.remove();
-        }
+        toastr.success(`${randomName} menyewa ${randomMobil} - Rp ${price.toLocaleString('id-ID')}`, 'Pesanan Masuk!');
     };
 </script>
 @endpush

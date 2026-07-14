@@ -17,27 +17,28 @@ use App\Http\Controllers\Auth\PelangganAuthController;
 |--------------------------------------------------------------------------
 */
 Route::get('/', function () {
-    return redirect('/login');
+    return redirect()->route('dashboard');
 });
 
 /*
 |--------------------------------------------------------------------------
-| Resource Routes
+| Admin Protected Routes
 |--------------------------------------------------------------------------
 */
-Route::resource('admins', AdminController::class);
-Route::resource('pelanggans', PelangganController::class);
-Route::resource('kategori-mobils', KategoriMobilController::class);
-Route::resource('mobils', MobilController::class);
-Route::resource('transaksis', TransaksiController::class);
-Route::resource('detail-transaksis', DetailTransaksiController::class);
+Route::middleware(['admin'])->group(function () {
+    Route::resource('admins', AdminController::class);
+    Route::resource('pelanggans', PelangganController::class);
+    Route::resource('kategori-mobils', KategoriMobilController::class);
+    Route::resource('mobils', MobilController::class);
+    Route::resource('transaksis', TransaksiController::class);
+    Route::resource('detail-transaksis', DetailTransaksiController::class);
 
-/*
-|--------------------------------------------------------------------------
-| Dashboard Routes
-|--------------------------------------------------------------------------
-*/
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/admin/dashboard', function () {
+        return view('dashboard.admin');
+    })->name('admin.dashboard');
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -52,7 +53,7 @@ Route::post('/login', [PelangganAuthController::class, 'login']);
 
 Route::post('/logout', [PelangganAuthController::class, 'logout'])->name('pelanggan.logout');
 
-Route::middleware('auth:pelanggan')->group(function () {
+Route::middleware(['pelanggan'])->group(function () {
     Route::get('/dashboard/pelanggan', function () {
         return view('dashboard.pelanggan');
     })->name('pelanggan.dashboard');
@@ -67,9 +68,3 @@ Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name(
 Route::post('/admin/login', [AdminAuthController::class, 'login']);
 
 Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
-
-Route::middleware('auth:admin')->group(function () {
-    Route::get('/admin/dashboard', function () {
-        return view('dashboard.admin');
-    })->name('admin.dashboard');
-});

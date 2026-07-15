@@ -5,6 +5,7 @@
 @section('page-subtitle', 'Perbarui data kendaraan')
 
 @section('content')
+{{-- Menampilkan form edit mobil untuk memperbarui data kendaraan --}}
 <div class="row">
     <div class="col-lg-8">
         <div class="card shadow mb-4">

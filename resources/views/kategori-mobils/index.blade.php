@@ -5,6 +5,7 @@
 @section('page-subtitle', 'Kelola kategori produk mobil')
 
 @section('content')
+{{-- Menampilkan daftar kategori mobil yang tersedia --}}
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">

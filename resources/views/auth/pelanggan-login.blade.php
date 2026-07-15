@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+{{-- Menampilkan halaman login pelanggan untuk akses dashboard pelanggan --}}
     <meta charset="UTF-8">
     <title>Login Pelanggan</title>
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">

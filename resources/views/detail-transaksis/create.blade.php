@@ -5,6 +5,7 @@
 @section('page-subtitle', 'Tambahkan item mobil ke dalam transaksi')
 
 @section('content')
+{{-- Menampilkan form tambah detail transaksi untuk menyusun data transaksi --}}
 <div class="row">
     <div class="col-lg-8">
         <div class="card shadow mb-4">

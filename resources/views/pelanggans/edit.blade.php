@@ -5,6 +5,7 @@
 @section('page-subtitle', 'Perbarui data pelanggan')
 
 @section('content')
+{{-- Menampilkan form edit pelanggan untuk memperbarui data pengguna --}}
 <div class="row">
     <div class="col-lg-7">
         <div class="card shadow mb-4">

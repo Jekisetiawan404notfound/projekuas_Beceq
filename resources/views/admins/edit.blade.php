@@ -5,6 +5,7 @@
 @section('page-subtitle', 'Perbarui data administrator')
 
 @section('content')
+{{-- Menampilkan form edit admin untuk mengubah data pengguna admin --}}
 <div class="row">
     <div class="col-lg-6">
         <div class="card shadow mb-4">
@@ -28,16 +29,37 @@
                     @method('PUT')
                     <div class="form-group">
                         <label for="username" class="font-weight-bold small text-uppercase text-muted">Username</label>
-                        <input type="text" name="username" id="username" class="form-control"
+                        <input type="text" name="username" id="username" class="form-control @error('username') is-invalid @enderror"
                             value="{{ old('username', $admin->username) }}" required>
+                        @error('username')
+                            <span class="invalid-feedback d-block">{{ $message }}</span>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label for="password" class="font-weight-bold small text-uppercase text-muted">
                             Password Baru
                             <small class="text-muted font-weight-normal">(kosongkan jika tidak ingin mengubah)</small>
                         </label>
-                        <input type="password" name="password" id="password" class="form-control"
-                            placeholder="Masukkan password baru">
+                        <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror"
+                            placeholder="Masukkan password baru (minimal 6 karakter)">
+                        @error('password')
+                            <span class="invalid-feedback d-block">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="password_confirmation" class="font-weight-bold small text-uppercase text-muted">Konfirmasi Password</label>
+                        <input type="password" name="password_confirmation" id="password_confirmation" class="form-control"
+                            placeholder="Konfirmasi password baru">
+                    </div>
+                    <div class="form-group">
+                        <label for="role" class="font-weight-bold small text-uppercase text-muted">Role</label>
+                        <select name="role" id="role" class="form-control @error('role') is-invalid @enderror" required>
+                            <option value="admin" {{ old('role', $admin->role) == 'admin' ? 'selected' : '' }}>Admin</option>
+                            <option value="super_admin" {{ old('role', $admin->role) == 'super_admin' ? 'selected' : '' }}>Super Admin</option>
+                        </select>
+                        @error('role')
+                            <span class="invalid-feedback d-block">{{ $message }}</span>
+                        @enderror
                     </div>
                     <hr>
                     <button type="submit" class="btn btn-primary">

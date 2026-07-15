@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+{{-- Menampilkan halaman login admin untuk akses panel administrator --}}
     <meta charset="UTF-8">
     <title>Login Admin</title>
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">

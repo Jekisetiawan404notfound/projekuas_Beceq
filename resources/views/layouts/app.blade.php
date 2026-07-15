@@ -107,7 +107,18 @@
                 <!-- Divider -->
                 <hr class="sidebar-divider">
 
-               
+                <!-- Heading: Pengaturan -->
+                <div class="sidebar-heading">
+                    Pengaturan
+                </div>
+
+                <!-- Nav Item - Admin -->
+                <li class="nav-item {{ request()->routeIs('admins.*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('admins.index') }}">
+                        <i class="fas fa-fw fa-user-cog"></i>
+                        <span>Manajemen Admin</span>
+                    </a>
+                </li>
             @elseif(Auth::guard('pelanggan')->check())
                 <li class="nav-item {{ request()->routeIs('pelanggan.dashboard') || request()->routeIs('pelanggan.transaksi.create') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('pelanggan.dashboard') }}">
@@ -158,12 +169,12 @@
                         <i class="fa fa-bars"></i>
                     </button>
 
-                    <!-- Topbar Search (hidden, dekoratif) -->
-                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                    <!-- Topbar Search -->
+                    <form method="GET" action="{{ route('pelanggan.dashboard') }}" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Cari data..." aria-label="Search" aria-describedby="basic-addon2">
+                            <input type="text" name="search" value="{{ request('search') }}" class="form-control bg-light border-0 small" placeholder="Cari mobil..." aria-label="Cari mobil" aria-describedby="basic-addon2">
                             <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
+                                <button class="btn btn-primary" type="submit">
                                     <i class="fas fa-search fa-sm"></i>
                                 </button>
                             </div>
@@ -284,7 +295,8 @@
                         </div>
                     @endif
 
-                    @yield('content')
+                    {{-- Menampilkan konten utama halaman sesuai view yang dipanggil --}}
+@yield('content')
 
                 </div>
                 <!-- /.container-fluid -->

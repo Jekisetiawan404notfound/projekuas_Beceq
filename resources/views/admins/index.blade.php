@@ -5,6 +5,7 @@
 @section('page-subtitle', 'Kelola akun administrator sistem')
 
 @section('content')
+{{-- Menampilkan daftar admin yang tersedia dalam sistem --}}
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">
@@ -21,6 +22,7 @@
                     <tr>
                         <th width="50">#</th>
                         <th>Username</th>
+                        <th>Role</th>
                         <th>Dibuat</th>
                         <th width="160">Aksi</th>
                     </tr>
@@ -40,8 +42,15 @@
                             </div>
                         </td>
                         <td>
+                            @if($admin->role == 'super_admin')
+                                <span class="badge badge-danger"><i class="fas fa-crown mr-1"></i>Super Admin</span>
+                            @else
+                                <span class="badge badge-primary"><i class="fas fa-user mr-1"></i>Admin</span>
+                            @endif
+                        </td>
+                        <td>
                             <span class="badge badge-info">
-                                <i class="fas fa-calendar mr-1"></i>{{ $admin->created_at->format('d M Y') }}
+                                <i class="fas fa-calendar mr-1"></i>{{ $admin->created_at?->format('d M Y') ?? '-' }}
                             </span>
                         </td>
                         <td>

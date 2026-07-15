@@ -11,11 +11,12 @@ class Admin extends Authenticatable
 
     protected $table = 'admins';
     protected $primaryKey = 'id_admin';
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
         'username',
         'password',
+        'role',
     ];
 
     protected $hidden = [

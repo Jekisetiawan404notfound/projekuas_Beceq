@@ -5,6 +5,7 @@
 @section('page-subtitle', 'Silakan tentukan jumlah unit dan tanggal transaksi')
 
 @section('content')
+{{-- Menampilkan form penyewaan mobil untuk pelanggan --}}
 
 @php
     function getCarImage($merek, $model) {

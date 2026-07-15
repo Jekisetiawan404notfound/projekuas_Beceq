@@ -5,6 +5,7 @@
 @section('page-subtitle', 'Buat akun administrator baru')
 
 @section('content')
+{{-- Menampilkan form tambah admin untuk menginput data pengguna admin --}}
 <div class="row">
     <div class="col-lg-6">
         <div class="card shadow mb-4">
@@ -27,13 +28,35 @@
                     @csrf
                     <div class="form-group">
                         <label for="username" class="font-weight-bold small text-uppercase text-muted">Username</label>
-                        <input type="text" name="username" id="username" class="form-control"
+                        <input type="text" name="username" id="username" class="form-control @error('username') is-invalid @enderror"
                             placeholder="Masukkan username" value="{{ old('username') }}" required>
+                        @error('username')
+                            <span class="invalid-feedback d-block">{{ $message }}</span>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label for="password" class="font-weight-bold small text-uppercase text-muted">Password</label>
-                        <input type="password" name="password" id="password" class="form-control"
-                            placeholder="Masukkan password" required>
+                        <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror"
+                            placeholder="Masukkan password (minimal 6 karakter)" required>
+                        @error('password')
+                            <span class="invalid-feedback d-block">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="password_confirmation" class="font-weight-bold small text-uppercase text-muted">Konfirmasi Password</label>
+                        <input type="password" name="password_confirmation" id="password_confirmation" class="form-control"
+                            placeholder="Konfirmasi password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="role" class="font-weight-bold small text-uppercase text-muted">Role</label>
+                        <select name="role" id="role" class="form-control @error('role') is-invalid @enderror" required>
+                            <option value="">-- Pilih Role --</option>
+                            <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
+                            <option value="super_admin" {{ old('role') == 'super_admin' ? 'selected' : '' }}>Super Admin</option>
+                        </select>
+                        @error('role')
+                            <span class="invalid-feedback d-block">{{ $message }}</span>
+                        @enderror
                     </div>
                     <hr>
                     <button type="submit" class="btn btn-primary">

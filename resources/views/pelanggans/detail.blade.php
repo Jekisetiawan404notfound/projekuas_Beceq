@@ -5,6 +5,7 @@
 @section('page-subtitle', 'Rincian transaksi penyewaan Anda')
 
 @section('content')
+{{-- Menampilkan detail transaksi sewa pelanggan --}}
 
 @php
     function getCarImage($merek, $model) {

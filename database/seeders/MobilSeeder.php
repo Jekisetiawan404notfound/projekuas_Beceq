@@ -14,7 +14,7 @@ class MobilSeeder extends Seeder
     public function run(): void
     {
         Mobil::create([
-            'kategori_id' => Kategori_mobil::where('nama_kategori', 'MPV')->first()->id,
+            'id_kategori' => Kategori_mobil::where('nama_kategori', 'MPV')->first()->id_kategori,
             'merek' => 'Toyota',
             'model' => 'Avanza G CVT',
             'harga' => 258900000,
@@ -22,7 +22,7 @@ class MobilSeeder extends Seeder
         ]);
 
         Mobil::create([
-            'kategori_id' => Kategori_mobil::where('nama_kategori', 'MPV')->first()->id,
+            'id_kategori' => Kategori_mobil::where('nama_kategori', 'MPV')->first()->id_kategori,
             'merek' => 'Toyota',
             'model' => 'Innova Zenix',
             'harga' => 458000000,
@@ -30,7 +30,7 @@ class MobilSeeder extends Seeder
         ]);
 
         Mobil::create([
-            'kategori_id' => Kategori_mobil::where('nama_kategori', 'SUV')->first()->id,
+            'id_kategori' => Kategori_mobil::where('nama_kategori', 'SUV')->first()->id_kategori,
             'merek' => 'Honda',
             'model' => 'HR-V RS',
             'harga' => 512000000,
@@ -38,7 +38,7 @@ class MobilSeeder extends Seeder
         ]);
 
         Mobil::create([
-            'kategori_id' => Kategori_mobil::where('nama_kategori', 'Sedan')->first()->id,
+            'id_kategori' => Kategori_mobil::where('nama_kategori', 'Sedan')->first()->id_kategori,
             'merek' => 'Honda',
             'model' => 'Civic RS',
             'harga' => 620000000,
@@ -46,7 +46,7 @@ class MobilSeeder extends Seeder
         ]);
 
         Mobil::create([
-            'kategori_id' => Kategori_mobil::where('nama_kategori', 'SUV')->first()->id,
+            'id_kategori' => Kategori_mobil::where('nama_kategori', 'SUV')->first()->id_kategori,
             'merek' => 'Mitsubishi',
             'model' => 'Pajero Sport',
             'harga' => 610000000,
@@ -54,7 +54,7 @@ class MobilSeeder extends Seeder
         ]);
 
         Mobil::create([
-            'kategori_id' => Kategori_mobil::where('nama_kategori', 'MPV')->first()->id,
+            'id_kategori' => Kategori_mobil::where('nama_kategori', 'MPV')->first()->id_kategori,
             'merek' => 'Suzuki',
             'model' => 'Ertiga Hybrid',
             'harga' => 289000000,
@@ -62,7 +62,7 @@ class MobilSeeder extends Seeder
         ]);
 
         Mobil::create([
-            'kategori_id' => Kategori_mobil::where('nama_kategori', 'MPV')->first()->id,
+            'id_kategori' => Kategori_mobil::where('nama_kategori', 'MPV')->first()->id_kategori,
             'merek' => 'Daihatsu',
             'model' => 'Xenia',
             'harga' => 245000000,
@@ -70,7 +70,7 @@ class MobilSeeder extends Seeder
         ]);
 
         Mobil::create([
-            'kategori_id' => Kategori_mobil::where('nama_kategori', 'Hatchback')->first()->id,
+            'id_kategori' => Kategori_mobil::where('nama_kategori', 'Hatchback')->first()->id_kategori,
             'merek' => 'Toyota',
             'model' => 'Yaris GR',
             'harga' => 340000000,

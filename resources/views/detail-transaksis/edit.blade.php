@@ -5,6 +5,7 @@
 @section('page-subtitle', 'Perbarui item detail transaksi')
 
 @section('content')
+{{-- Menampilkan form edit detail transaksi untuk memperbarui data transaksi --}}
 <div class="row">
     <div class="col-lg-8">
         <div class="card shadow mb-4">

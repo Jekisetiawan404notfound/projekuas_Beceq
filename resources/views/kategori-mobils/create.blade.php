@@ -5,6 +5,7 @@
 @section('page-subtitle', 'Tambahkan kategori produk mobil baru')
 
 @section('content')
+{{-- Menampilkan form tambah kategori mobil --}}
 <div class="row">
     <div class="col-lg-6">
         <div class="card shadow mb-4">

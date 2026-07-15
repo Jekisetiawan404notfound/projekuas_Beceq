@@ -12,10 +12,30 @@ use Illuminate\Support\Facades\DB;
 
 class PelangganDashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $mobils = Mobil::with('kategori')->get();
-        return view('pelanggans.dashboard', compact('mobils'));
+        $search = $request->query('search');
+        $kategori = $request->query('kategori');
+        
+        $query = Mobil::with('kategori');
+        
+        // Search berdasarkan nama merek, model, atau kategori
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('merek', 'like', '%' . $search . '%')
+                  ->orWhere('model', 'like', '%' . $search . '%');
+            });
+        }
+        
+        // Filter berdasarkan kategori
+        if ($kategori) {
+            $query->where('id_kategori', $kategori);
+        }
+        
+        $mobils = $query->get();
+        $kategoris = \App\Models\Kategori_mobil::all();
+        
+        return view('pelanggans.dashboard', compact('mobils', 'kategoris', 'search', 'kategori'));
     }
 
     public function createTransaksi($id_mobil)

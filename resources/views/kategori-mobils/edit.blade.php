@@ -5,6 +5,7 @@
 @section('page-subtitle', 'Perbarui data kategori mobil')
 
 @section('content')
+{{-- Menampilkan form edit kategori mobil --}}
 <div class="row">
     <div class="col-lg-6">
         <div class="card shadow mb-4">

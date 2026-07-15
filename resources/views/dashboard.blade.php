@@ -5,6 +5,7 @@
 @section('page-subtitle', 'Ringkasan aktivitas rental mobil Beceq Rent')
 
 @section('content')
+{{-- Menampilkan ringkasan dashboard dan transaksi terbaru --}}
 
 <!-- Content Row - Stats Cards -->
 <div class="row">

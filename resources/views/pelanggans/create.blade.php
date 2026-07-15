@@ -5,6 +5,7 @@
 @section('page-subtitle', 'Daftarkan pelanggan baru')
 
 @section('content')
+{{-- Menampilkan form tambah pelanggan baru --}}
 <div class="row">
     <div class="col-lg-7">
         <div class="card shadow mb-4">

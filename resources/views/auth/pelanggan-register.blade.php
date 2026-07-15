@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+{{-- Menampilkan halaman registrasi pelanggan untuk membuat akun baru --}}
     <meta charset="UTF-8">
     <title>Register Pelanggan</title>
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">

@@ -14,32 +14,32 @@ class TransaksiSeeder extends Seeder
      */
     public function run(): void
     {
-        $adminId = Admin::where('username', 'admin')->first()->id;
+        $adminId = Admin::where('username', 'admin')->first()->id_admin;
 
         Transaksi::create([
-            'pelanggan_id' => Pelanggan::where('nama', 'Budi Santoso')->first()->id,
-            'admin_id' => $adminId,
+            'id_pelanggan' => Pelanggan::where('nama', 'Budi Santoso')->first()->id_pelanggan,
+            'id_admin' => $adminId,
             'tgl_transaksi' => '2026-07-08',
             'total_bayar' => 258900000,
         ]);
 
         Transaksi::create([
-            'pelanggan_id' => Pelanggan::where('nama', 'Andi Saputra')->first()->id,
-            'admin_id' => $adminId,
+            'id_pelanggan' => Pelanggan::where('nama', 'Andi Saputra')->first()->id_pelanggan,
+            'id_admin' => $adminId,
             'tgl_transaksi' => '2026-07-08',
             'total_bayar' => 458000000,
         ]);
 
         Transaksi::create([
-            'pelanggan_id' => Pelanggan::where('nama', 'Siti Aisyah')->first()->id,
-            'admin_id' => $adminId,
+            'id_pelanggan' => Pelanggan::where('nama', 'Siti Aisyah')->first()->id_pelanggan,
+            'id_admin' => $adminId,
             'tgl_transaksi' => '2026-07-09',
             'total_bayar' => 289000000,
         ]);
 
         Transaksi::create([
-            'pelanggan_id' => Pelanggan::where('nama', 'Luis Marwin')->first()->id,
-            'admin_id' => $adminId,
+            'id_pelanggan' => Pelanggan::where('nama', 'Luis Marwin')->first()->id_pelanggan,
+            'id_admin' => $adminId,
             'tgl_transaksi' => '2026-07-09',
             'total_bayar' => 610000000,
         ]);

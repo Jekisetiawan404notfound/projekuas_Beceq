@@ -5,6 +5,7 @@
 @section('page-subtitle', 'Tambahkan data kendaraan baru ke inventaris')
 
 @section('content')
+{{-- Menampilkan form tambah mobil baru --}}
 <div class="row">
     <div class="col-lg-8">
         <div class="card shadow mb-4">

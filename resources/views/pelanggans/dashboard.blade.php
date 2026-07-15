@@ -5,7 +5,30 @@
 @section('page-subtitle', 'Pilih mobil impian Anda dan lakukan penyewaan dengan mudah')
 
 @section('content')
+{{-- Menampilkan katalog mobil untuk pelanggan --}}
 
+
+  
+{{-- Menampilkan informasi hasil pencarian dan filter yang sedang aktif --}}
+<!-- Results Info -->
+@if(request('search') || request('kategori'))
+<div class="alert alert-info alert-dismissible fade show mb-4" role="alert">
+    <i class="fas fa-info-circle mr-2"></i>
+    <strong>Hasil Pencarian:</strong> 
+    @if(request('search')) Mencari <strong>"{{ request('search') }}"</strong> @endif
+    @if(request('kategori')) di kategori <strong>{{ $kategoris->find(request('kategori'))?->nama_kategori ?? 'Tidak diketahui' }}</strong> @endif
+    @if($mobils->isEmpty())
+        — <strong>Tidak ada mobil yang sesuai</strong>
+    @else
+        — <strong>Ditemukan {{ $mobils->count() }} mobil</strong>
+    @endif
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
+
+{{-- Fungsi pembantu untuk menentukan gambar mobil berdasarkan merek dan model --}}
 @php
     function getCarImage($merek, $model) {
         $merek = strtolower($merek);
@@ -87,6 +110,7 @@
 </style>
 @endpush
 
+{{-- Menampilkan daftar mobil dalam bentuk kartu --}}
 <div class="row">
     @forelse($mobils as $mobil)
     <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
@@ -143,10 +167,19 @@
         </div>
     </div>
     @empty
+    {{-- Menampilkan pesan saat tidak ada mobil yang sesuai dengan pencarian atau filter --}}
     <div class="col-12 text-center py-5 text-muted">
         <i class="fas fa-car-crash fa-3x mb-3 d-block"></i>
-        <h4>Armada mobil tidak tersedia.</h4>
-        <p>Silakan hubungi admin kami untuk informasi lebih lanjut.</p>
+        @if(request('search') || request('kategori'))
+            <h4>Mobil tidak ditemukan.</h4>
+            <p>Coba ubah kata kunci pencarian atau filter kategori.</p>
+            <a href="{{ route('pelanggan.dashboard') }}" class="btn btn-primary btn-sm">
+                <i class="fas fa-redo mr-1"></i> Lihat Semua Mobil
+            </a>
+        @else
+            <h4>Armada mobil tidak tersedia.</h4>
+            <p>Silakan hubungi admin kami untuk informasi lebih lanjut.</p>
+        @endif
     </div>
     @endforelse
 </div>

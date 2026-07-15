@@ -43,16 +43,18 @@
                         <td class="text-muted">{{ $pelanggan->alamat }}</td>
                         <td><span class="badge badge-success"><i class="fas fa-phone mr-1"></i>{{ $pelanggan->no_telepon }}</span></td>
                         <td>
-                            <a href="{{ route('pelanggans.edit', $pelanggan->id_pelanggan) }}" class="btn btn-warning btn-sm">
-                                <i class="fas fa-edit"></i> Edit
-                            </a>
-                            <form action="{{ route('pelanggans.destroy', $pelanggan->id_pelanggan) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus pelanggan ini?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">
-                                    <i class="fas fa-trash"></i> Hapus
-                                </button>
-                            </form>
+                            <div class="d-flex align-items-center">
+                                <a href="{{ route('pelanggans.edit', $pelanggan->id_pelanggan) }}" class="btn btn-warning btn-sm mr-2">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <form action="{{ route('pelanggans.destroy', $pelanggan->id_pelanggan) }}" method="POST" class="d-inline m-0" onsubmit="return confirm('Yakin ingin menghapus pelanggan ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i> Hapus
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     @empty

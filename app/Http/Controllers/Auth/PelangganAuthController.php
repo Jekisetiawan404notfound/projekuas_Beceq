@@ -16,7 +16,7 @@ class PelangganAuthController extends Controller
     public function showRegisterForm()
     {
         if (Auth::guard('pelanggan')->check()) {
-            return redirect('/dashboard');
+            return redirect('/dashboard/pelanggan');
         }
 
         return view('auth.pelanggan-register');
@@ -55,7 +55,7 @@ class PelangganAuthController extends Controller
     public function showLoginForm()
     {
         if (Auth::guard('pelanggan')->check()) {
-            return redirect('/dashboard');
+            return redirect('/dashboard/pelanggan');
         }
 
         return view('auth.pelanggan-login');
@@ -73,7 +73,7 @@ class PelangganAuthController extends Controller
 
         if (Auth::guard('pelanggan')->attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/dashboard');
+            return redirect()->intended('/dashboard/pelanggan');
         }
 
         return back()

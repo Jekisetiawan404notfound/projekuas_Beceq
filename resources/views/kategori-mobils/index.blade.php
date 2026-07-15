@@ -34,16 +34,18 @@
                             </span>
                         </td>
                         <td>
-                            <a href="{{ route('kategori-mobils.edit', $kategori->id_kategori) }}" class="btn btn-warning btn-sm">
-                                <i class="fas fa-edit"></i> Edit
-                            </a>
-                            <form action="{{ route('kategori-mobils.destroy', $kategori->id_kategori) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin hapus kategori ini?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">
-                                    <i class="fas fa-trash"></i> Hapus
-                                </button>
-                            </form>
+                            <div class="d-flex align-items-center">
+                                <a href="{{ route('kategori-mobils.edit', $kategori->id_kategori) }}" class="btn btn-warning btn-sm mr-2">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <form action="{{ route('kategori-mobils.destroy', $kategori->id_kategori) }}" method="POST" class="d-inline m-0" onsubmit="return confirm('Yakin hapus kategori ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i> Hapus
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     @empty

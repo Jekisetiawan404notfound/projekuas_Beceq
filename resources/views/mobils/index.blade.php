@@ -48,16 +48,18 @@
                             @endif
                         </td>
                         <td>
-                            <a href="{{ route('mobils.edit', $mobil->id_mobil) }}" class="btn btn-warning btn-sm">
-                                <i class="fas fa-edit"></i> Edit
-                            </a>
-                            <form action="{{ route('mobils.destroy', $mobil->id_mobil) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin hapus mobil ini?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">
-                                    <i class="fas fa-trash"></i> Hapus
-                                </button>
-                            </form>
+                            <div class="d-flex align-items-center">
+                                <a href="{{ route('mobils.edit', $mobil->id_mobil) }}" class="btn btn-warning btn-sm mr-2">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <form action="{{ route('mobils.destroy', $mobil->id_mobil) }}" method="POST" class="d-inline m-0" onsubmit="return confirm('Yakin hapus mobil ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i> Hapus
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     @empty

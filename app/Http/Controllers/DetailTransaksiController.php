@@ -18,43 +18,40 @@ class DetailTransaksiController extends Controller
 
     public function create()
     {
-        $transaksis = Transaksi::all();
-        $mobils = Mobil::all();
-        return view('detail-transaksis.create', compact('transaksis', 'mobils'));
+        return view('detail-transaksis.create', [
+            'transaksis' => Transaksi::all(),
+            'mobils'     => Mobil::all(),
+        ]);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'transaksi_id' => 'required',
-            'mobil_id' => 'required',
-            'jumlah_beli' => 'required|integer|min:1',
+            'id_transaksi' => 'required',
+            'id_mobil'     => 'required',
+            'jumlah_beli'  => 'required|integer|min:1',
         ]);
 
         try {
             DB::transaction(function () use ($request) {
-                $mobil = Mobil::findOrFail($request->mobil_id);
+                $mobil = Mobil::findOrFail($request->id_mobil);
 
                 if ($mobil->stok < $request->jumlah_beli) {
                     throw new \Exception("Stok tidak mencukupi.");
                 }
 
-                $subtotal = $mobil->harga * $request->jumlah_beli;
-
-                // Deduct stock
+                $subtotal    = $mobil->harga * $request->jumlah_beli;
                 $mobil->stok -= $request->jumlah_beli;
                 $mobil->save();
 
-                // Create detail
                 Detail_transaksi::create([
-                    'transaksi_id' => $request->transaksi_id,
-                    'mobil_id' => $request->mobil_id,
-                    'jumlah_beli' => $request->jumlah_beli,
-                    'subtotal' => $subtotal,
+                    'id_transaksi' => $request->id_transaksi,
+                    'id_mobil'     => $request->id_mobil,
+                    'jumlah_beli'  => $request->jumlah_beli,
+                    'subtotal'     => $subtotal,
                 ]);
 
-                // Update total_bayar in Transaksi
-                $transaksi = Transaksi::findOrFail($request->transaksi_id);
+                $transaksi = Transaksi::findOrFail($request->id_transaksi);
                 $transaksi->total_bayar += $subtotal;
                 $transaksi->save();
             });
@@ -67,54 +64,50 @@ class DetailTransaksiController extends Controller
 
     public function edit($id)
     {
-        $detail = Detail_transaksi::findOrFail($id);
-        $transaksis = Transaksi::all();
-        $mobils = Mobil::all();
-        return view('detail-transaksis.edit', compact('detail', 'transaksis', 'mobils'));
+        return view('detail-transaksis.edit', [
+            'detail'     => Detail_transaksi::findOrFail($id),
+            'transaksis' => Transaksi::all(),
+            'mobils'     => Mobil::all(),
+        ]);
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
-            'transaksi_id' => 'required',
-            'mobil_id' => 'required',
-            'jumlah_beli' => 'required|integer|min:1',
+            'id_transaksi' => 'required',
+            'id_mobil'     => 'required',
+            'jumlah_beli'  => 'required|integer|min:1',
         ]);
 
         try {
             DB::transaction(function () use ($request, $id) {
-                $detail = Detail_transaksi::findOrFail($id);
-                $mobilBaru = Mobil::findOrFail($request->mobil_id);
-                $mobilLama = Mobil::find($detail->mobil_id);
+                $detail    = Detail_transaksi::findOrFail($id);
+                $mobilBaru = Mobil::findOrFail($request->id_mobil);
+                $mobilLama = Mobil::find($detail->id_mobil);
 
-                // Kembalikan stok mobil lama
                 if ($mobilLama) {
                     $mobilLama->stok += $detail->jumlah_beli;
                     $mobilLama->save();
                 }
 
-                // Cek stok mobil baru
                 if ($mobilBaru->stok < $request->jumlah_beli) {
                     throw new \Exception("Stok tidak mencukupi.");
                 }
 
-                // Kurangi stok mobil baru
                 $mobilBaru->stok -= $request->jumlah_beli;
                 $mobilBaru->save();
 
                 $subtotalBaru = $mobilBaru->harga * $request->jumlah_beli;
-                $selisih = $subtotalBaru - $detail->subtotal;
+                $selisih      = $subtotalBaru - $detail->subtotal;
 
-                // Update detail
                 $detail->update([
-                    'transaksi_id' => $request->transaksi_id,
-                    'mobil_id' => $request->mobil_id,
-                    'jumlah_beli' => $request->jumlah_beli,
-                    'subtotal' => $subtotalBaru,
+                    'id_transaksi' => $request->id_transaksi,
+                    'id_mobil'     => $request->id_mobil,
+                    'jumlah_beli'  => $request->jumlah_beli,
+                    'subtotal'     => $subtotalBaru,
                 ]);
 
-                // Update total_bayar di Transaksi
-                $transaksi = Transaksi::findOrFail($request->transaksi_id);
+                $transaksi = Transaksi::findOrFail($request->id_transaksi);
                 $transaksi->total_bayar += $selisih;
                 $transaksi->save();
             });
@@ -130,20 +123,15 @@ class DetailTransaksiController extends Controller
         $detail = Detail_transaksi::findOrFail($id);
 
         DB::transaction(function () use ($detail) {
-            // Restore stock
-            $mobil = Mobil::find($detail->mobil_id);
+            $mobil = Mobil::find($detail->id_mobil);
             if ($mobil) {
                 $mobil->stok += $detail->jumlah_beli;
                 $mobil->save();
             }
 
-            // Update transaction total_bayar
-            $transaksi = Transaksi::find($detail->transaksi_id);
+            $transaksi = Transaksi::find($detail->id_transaksi);
             if ($transaksi) {
-                $transaksi->total_bayar -= $detail->subtotal;
-                if ($transaksi->total_bayar < 0) {
-                    $transaksi->total_bayar = 0;
-                }
+                $transaksi->total_bayar = max(0, $transaksi->total_bayar - $detail->subtotal);
                 $transaksi->save();
             }
 

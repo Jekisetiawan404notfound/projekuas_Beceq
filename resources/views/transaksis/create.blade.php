@@ -27,22 +27,22 @@
                     @csrf
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="pelanggan_id" class="font-weight-bold small text-uppercase text-muted">Pelanggan</label>
-                            <select name="pelanggan_id" id="pelanggan_id" class="form-control" required>
+                            <label for="id_pelanggan" class="font-weight-bold small text-uppercase text-muted">Pelanggan</label>
+                            <select name="id_pelanggan" id="id_pelanggan" class="form-control" required>
                                 <option value="">-- Pilih Pelanggan --</option>
                                 @foreach($pelanggans as $pelanggan)
-                                    <option value="{{ $pelanggan->id_pelanggan }}" {{ old('pelanggan_id') == $pelanggan->id_pelanggan ? 'selected' : '' }}>
+                                    <option value="{{ $pelanggan->id_pelanggan }}" {{ old('id_pelanggan') == $pelanggan->id_pelanggan ? 'selected' : '' }}>
                                         {{ $pelanggan->nama }}
                                     </option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="admin_id" class="font-weight-bold small text-uppercase text-muted">Admin</label>
-                            <select name="admin_id" id="admin_id" class="form-control" required>
+                            <label for="id_admin" class="font-weight-bold small text-uppercase text-muted">Admin</label>
+                            <select name="id_admin" id="id_admin" class="form-control" required>
                                 <option value="">-- Pilih Admin --</option>
                                 @foreach($admins as $admin)
-                                    <option value="{{ $admin->id_admin }}" {{ old('admin_id') == $admin->id_admin ? 'selected' : '' }}>
+                                    <option value="{{ $admin->id_admin }}" {{ old('id_admin') == $admin->id_admin ? 'selected' : '' }}>
                                         {{ $admin->username }}
                                     </option>
                                 @endforeach
@@ -61,14 +61,14 @@
                     </p>
 
                     <div class="form-group">
-                        <label for="mobil_id" class="font-weight-bold small text-uppercase text-muted">Pilih Mobil</label>
-                        <select name="mobil_id" id="mobil_id" class="form-control" required onchange="hitungSubtotal()">
+                        <label for="id_mobil" class="font-weight-bold small text-uppercase text-muted">Pilih Mobil</label>
+                        <select name="id_mobil" id="id_mobil" class="form-control" required onchange="hitungSubtotal()">
                             <option value="">-- Pilih Mobil (Stok Tersedia) --</option>
                             @foreach($mobils as $mobil)
                                 <option value="{{ $mobil->id_mobil }}"
                                     data-harga="{{ $mobil->harga }}"
                                     data-stok="{{ $mobil->stok }}"
-                                    {{ old('mobil_id') == $mobil->id_mobil ? 'selected' : '' }}>
+                                    {{ old('id_mobil') == $mobil->id_mobil ? 'selected' : '' }}>
                                     {{ $mobil->merek }} {{ $mobil->model }} — Rp {{ number_format($mobil->harga, 0, ',', '.') }} (Stok: {{ $mobil->stok }})
                                 </option>
                             @endforeach
@@ -102,7 +102,7 @@
 @push('scripts')
 <script>
 function hitungSubtotal() {
-    const mobilSelect = document.getElementById('mobil_id');
+    const mobilSelect = document.getElementById('id_mobil');
     const jumlah = parseInt(document.getElementById('jumlah_beli').value) || 0;
     const selectedOption = mobilSelect.options[mobilSelect.selectedIndex];
     const harga = parseInt(selectedOption.dataset.harga) || 0;

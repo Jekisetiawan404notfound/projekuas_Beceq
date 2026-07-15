@@ -20,50 +20,47 @@ class TransaksiController extends Controller
 
     public function create()
     {
-        $pelanggans = Pelanggan::all();
-        $admins = Admin::all();
-        $mobils = Mobil::where('stok', '>', 0)->get();
-        return view('transaksis.create', compact('pelanggans', 'admins', 'mobils'));
+        return view('transaksis.create', [
+            'pelanggans' => Pelanggan::all(),
+            'admins'     => Admin::all(),
+            'mobils'     => Mobil::where('stok', '>', 0)->get(),
+        ]);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'pelanggan_id' => 'required',
-            'admin_id' => 'required',
+            'id_pelanggan'  => 'required',
+            'id_admin'      => 'required',
             'tgl_transaksi' => 'required|date',
-            'mobil_id' => 'required',
-            'jumlah_beli' => 'required|integer|min:1',
+            'id_mobil'      => 'required',
+            'jumlah_beli'   => 'required|integer|min:1',
         ]);
 
         try {
             DB::transaction(function () use ($request) {
-                $mobil = Mobil::findOrFail($request->mobil_id);
+                $mobil = Mobil::findOrFail($request->id_mobil);
 
                 if ($mobil->stok < $request->jumlah_beli) {
                     throw new \Exception("Stok mobil tidak mencukupi.");
                 }
 
-                $subtotal = $mobil->harga * $request->jumlah_beli;
-
-                // Deduct stock
+                $subtotal    = $mobil->harga * $request->jumlah_beli;
                 $mobil->stok -= $request->jumlah_beli;
                 $mobil->save();
 
-                // Create transaction
                 $transaksi = Transaksi::create([
-                    'pelanggan_id' => $request->pelanggan_id,
-                    'admin_id' => $request->admin_id,
+                    'id_pelanggan'  => $request->id_pelanggan,
+                    'id_admin'      => $request->id_admin,
                     'tgl_transaksi' => $request->tgl_transaksi,
-                    'total_bayar' => $subtotal,
+                    'total_bayar'   => $subtotal,
                 ]);
 
-                // Create detail transaction
                 Detail_transaksi::create([
-                    'transaksi_id' => $transaksi->id,
-                    'mobil_id' => $request->mobil_id,
-                    'jumlah_beli' => $request->jumlah_beli,
-                    'subtotal' => $subtotal,
+                    'id_transaksi' => $transaksi->id_transaksi,
+                    'id_mobil'     => $request->id_mobil,
+                    'jumlah_beli'  => $request->jumlah_beli,
+                    'subtotal'     => $subtotal,
                 ]);
             });
 
@@ -75,25 +72,25 @@ class TransaksiController extends Controller
 
     public function edit($id)
     {
-        $transaksi = Transaksi::findOrFail($id);
-        $pelanggans = Pelanggan::all();
-        $admins = Admin::all();
-        $mobils = Mobil::all();
-        return view('transaksis.edit', compact('transaksi', 'pelanggans', 'admins', 'mobils'));
+        return view('transaksis.edit', [
+            'transaksi'  => Transaksi::findOrFail($id),
+            'pelanggans' => Pelanggan::all(),
+            'admins'     => Admin::all(),
+            'mobils'     => Mobil::all(),
+        ]);
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
-            'pelanggan_id' => 'required',
-            'admin_id' => 'required',
+            'id_pelanggan'  => 'required',
+            'id_admin'      => 'required',
             'tgl_transaksi' => 'required|date',
         ]);
 
-        $transaksi = Transaksi::findOrFail($id);
-        $transaksi->update([
-            'pelanggan_id' => $request->pelanggan_id,
-            'admin_id' => $request->admin_id,
+        Transaksi::findOrFail($id)->update([
+            'id_pelanggan'  => $request->id_pelanggan,
+            'id_admin'      => $request->id_admin,
             'tgl_transaksi' => $request->tgl_transaksi,
         ]);
 
@@ -105,9 +102,8 @@ class TransaksiController extends Controller
         $transaksi = Transaksi::findOrFail($id);
 
         DB::transaction(function () use ($transaksi) {
-            // Restore stock
             foreach ($transaksi->detail_transaksis as $detail) {
-                $mobil = Mobil::find($detail->mobil_id);
+                $mobil = Mobil::find($detail->id_mobil);
                 if ($mobil) {
                     $mobil->stok += $detail->jumlah_beli;
                     $mobil->save();

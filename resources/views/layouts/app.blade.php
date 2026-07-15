@@ -40,84 +40,98 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('dashboard') }}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span>
-                </a>
-            </li>
+            @if(Auth::guard('admin')->check())
+                <li class="nav-item {{ request()->routeIs('dashboard') || request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('admin.dashboard') }}">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
+                <!-- Divider -->
+                <hr class="sidebar-divider">
 
-            <!-- Heading: Katalog Kendaraan -->
-            <div class="sidebar-heading">
-                Katalog Kendaraan
-            </div>
+                <!-- Heading: Katalog Kendaraan -->
+                <div class="sidebar-heading">
+                    Katalog Kendaraan
+                </div>
 
-            <!-- Nav Item - Kategori Mobil -->
-            <li class="nav-item {{ request()->routeIs('kategori-mobils.*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('kategori-mobils.index') }}">
-                    <i class="fas fa-fw fa-folder-open"></i>
-                    <span>Kategori Mobil</span>
-                </a>
-            </li>
+                <!-- Nav Item - Kategori Mobil -->
+                <li class="nav-item {{ request()->routeIs('kategori-mobils.*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('kategori-mobils.index') }}">
+                        <i class="fas fa-fw fa-folder-open"></i>
+                        <span>Kategori Mobil</span>
+                    </a>
+                </li>
 
-            <!-- Nav Item - Daftar Mobil -->
-            <li class="nav-item {{ request()->routeIs('mobils.*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('mobils.index') }}">
-                    <i class="fas fa-fw fa-car"></i>
-                    <span>Daftar Mobil</span>
-                </a>
-            </li>
+                <!-- Nav Item - Daftar Mobil -->
+                <li class="nav-item {{ request()->routeIs('mobils.*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('mobils.index') }}">
+                        <i class="fas fa-fw fa-car"></i>
+                        <span>Daftar Mobil</span>
+                    </a>
+                </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
+                <!-- Divider -->
+                <hr class="sidebar-divider">
 
-            <!-- Heading: Penyewaan & Pelanggan -->
-            <div class="sidebar-heading">
-                Penyewaan &amp; Pelanggan
-            </div>
+                <!-- Heading: Penyewaan & Pelanggan -->
+                <div class="sidebar-heading">
+                    Penyewaan &amp; Pelanggan
+                </div>
 
-            <!-- Nav Item - Pelanggan -->
-            <li class="nav-item {{ request()->routeIs('pelanggans.*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('pelanggans.index') }}">
-                    <i class="fas fa-fw fa-users"></i>
-                    <span>Pelanggan</span>
-                </a>
-            </li>
+                <!-- Nav Item - Pelanggan -->
+                <li class="nav-item {{ request()->routeIs('pelanggans.*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('pelanggans.index') }}">
+                        <i class="fas fa-fw fa-users"></i>
+                        <span>Pelanggan</span>
+                    </a>
+                </li>
 
-            <!-- Nav Item - Transaksi -->
-            <li class="nav-item {{ request()->routeIs('transaksis.*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('transaksis.index') }}">
-                    <i class="fas fa-fw fa-file-invoice-dollar"></i>
-                    <span>Transaksi Sewa</span>
-                </a>
-            </li>
+                <!-- Nav Item - Transaksi -->
+                <li class="nav-item {{ request()->routeIs('transaksis.*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('transaksis.index') }}">
+                        <i class="fas fa-fw fa-file-invoice-dollar"></i>
+                        <span>Transaksi Sewa</span>
+                    </a>
+                </li>
 
-            <!-- Nav Item - Detail Transaksi -->
-            <li class="nav-item {{ request()->routeIs('detail-transaksis.*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('detail-transaksis.index') }}">
-                    <i class="fas fa-fw fa-list-alt"></i>
-                    <span>Detail Transaksi</span>
-                </a>
-            </li>
+                <!-- Nav Item - Detail Transaksi -->
+                <li class="nav-item {{ request()->routeIs('detail-transaksis.*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('detail-transaksis.index') }}">
+                        <i class="fas fa-fw fa-list-alt"></i>
+                        <span>Detail Transaksi</span>
+                    </a>
+                </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
+                <!-- Divider -->
+                <hr class="sidebar-divider">
 
-            <!-- Heading: Pengaturan -->
-            <div class="sidebar-heading">
-                Pengaturan
-            </div>
+               
+            @elseif(Auth::guard('pelanggan')->check())
+                <li class="nav-item {{ request()->routeIs('pelanggan.dashboard') || request()->routeIs('pelanggan.transaksi.create') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('pelanggan.dashboard') }}">
+                        <i class="fas fa-fw fa-car"></i>
+                        <span>Katalog Mobil</span>
+                    </a>
+                </li>
 
-            <!-- Nav Item - Admin -->
-            <li class="nav-item {{ request()->routeIs('admins.*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('admins.index') }}">
-                    <i class="fas fa-fw fa-user-cog"></i>
-                    <span>Manajemen Admin</span>
-                </a>
-            </li>
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+
+                <!-- Heading: Transaksi Pelanggan -->
+                <div class="sidebar-heading">
+                    Transaksi Saya
+                </div>
+
+                <!-- Nav Item - Riwayat Transaksi -->
+                <li class="nav-item {{ request()->routeIs('pelanggan.transaksi.riwayat') || request()->routeIs('pelanggan.transaksi.detail') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('pelanggan.transaksi.riwayat') }}">
+                        <i class="fas fa-fw fa-history"></i>
+                        <span>Riwayat Sewa</span>
+                    </a>
+                </li>
+            @endif
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -196,26 +210,43 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Administrator</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                                    @if(Auth::guard('admin')->check())
+                                        {{ Auth::guard('admin')->user()->username }} (Admin)
+                                    @elseif(Auth::guard('pelanggan')->check())
+                                        {{ Auth::guard('pelanggan')->user()->nama }} (Pelanggan)
+                                    @else
+                                        Guest
+                                    @endif
+                                </span>
                                 <img class="img-profile rounded-circle"
-                                    src="https://ui-avatars.com/api/?name=Admin&background=4e73df&color=ffffff&size=40">
+                                    src="https://ui-avatars.com/api/?name={{ urlencode(Auth::guard('admin')->check() ? Auth::guard('admin')->user()->username : (Auth::guard('pelanggan')->check() ? Auth::guard('pelanggan')->user()->nama : 'Guest')) }}&background=4e73df&color=ffffff&size=40">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Settings
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
+                                @if(Auth::guard('admin')->check())
+                                    <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('admin-logout-form').submit();">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Logout Admin
+                                    </a>
+                                    <form id="admin-logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                                @elseif(Auth::guard('pelanggan')->check())
+                                    <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('pelanggan-logout-form').submit();">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Logout Pelanggan
+                                    </a>
+                                    <form id="pelanggan-logout-form" action="{{ route('pelanggan.logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                                @else
+                                    <a class="dropdown-item" href="{{ route('pelanggan.login') }}">
+                                        <i class="fas fa-sign-in-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Login
+                                    </a>
+                                @endif
                             </div>
                         </li>
 

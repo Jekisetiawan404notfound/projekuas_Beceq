@@ -17,7 +17,7 @@ use App\Http\Controllers\Auth\PelangganAuthController;
 |--------------------------------------------------------------------------
 */
 Route::get('/', function () {
-    return redirect()->route('dashboard');
+    return redirect()->route('pelanggan.login');
 });
 
 /*
@@ -35,9 +35,7 @@ Route::middleware(['admin'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('/admin/dashboard', function () {
-        return view('dashboard.admin');
-    })->name('admin.dashboard');
+    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 });
 
 /*
@@ -54,9 +52,11 @@ Route::post('/login', [PelangganAuthController::class, 'login']);
 Route::post('/logout', [PelangganAuthController::class, 'logout'])->name('pelanggan.logout');
 
 Route::middleware(['pelanggan'])->group(function () {
-    Route::get('/dashboard/pelanggan', function () {
-        return view('dashboard.pelanggan');
-    })->name('pelanggan.dashboard');
+    Route::get('/dashboard/pelanggan', [\App\Http\Controllers\PelangganDashboardController::class, 'index'])->name('pelanggan.dashboard');
+    Route::get('/dashboard/pelanggan/sewa/{id_mobil}', [\App\Http\Controllers\PelangganDashboardController::class, 'createTransaksi'])->name('pelanggan.transaksi.create');
+    Route::post('/dashboard/pelanggan/sewa', [\App\Http\Controllers\PelangganDashboardController::class, 'storeTransaksi'])->name('pelanggan.transaksi.store');
+    Route::get('/dashboard/pelanggan/riwayat', [\App\Http\Controllers\PelangganDashboardController::class, 'riwayatTransaksi'])->name('pelanggan.transaksi.riwayat');
+    Route::get('/dashboard/pelanggan/transaksi/{id_transaksi}', [\App\Http\Controllers\PelangganDashboardController::class, 'detailTransaksi'])->name('pelanggan.transaksi.detail');
 });
 
 /*

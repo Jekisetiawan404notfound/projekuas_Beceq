@@ -33,24 +33,24 @@
                     @method('PUT')
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="pelanggan_id" class="font-weight-bold small text-uppercase text-muted">Pelanggan</label>
-                            <select name="pelanggan_id" id="pelanggan_id" class="form-control" required>
+                            <label for="id_pelanggan" class="font-weight-bold small text-uppercase text-muted">Pelanggan</label>
+                            <select name="id_pelanggan" id="id_pelanggan" class="form-control" required>
                                 <option value="">-- Pilih Pelanggan --</option>
                                 @foreach($pelanggans as $pelanggan)
                                     <option value="{{ $pelanggan->id_pelanggan }}"
-                                        {{ old('pelanggan_id', $transaksi->pelanggan_id) == $pelanggan->id_pelanggan ? 'selected' : '' }}>
+                                        {{ old('id_pelanggan', $transaksi->id_pelanggan) == $pelanggan->id_pelanggan ? 'selected' : '' }}>
                                         {{ $pelanggan->nama }}
                                     </option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="admin_id" class="font-weight-bold small text-uppercase text-muted">Admin</label>
-                            <select name="admin_id" id="admin_id" class="form-control" required>
+                            <label for="id_admin" class="font-weight-bold small text-uppercase text-muted">Admin</label>
+                            <select name="id_admin" id="id_admin" class="form-control" required>
                                 <option value="">-- Pilih Admin --</option>
                                 @foreach($admins as $admin)
                                     <option value="{{ $admin->id_admin }}"
-                                        {{ old('admin_id', $transaksi->admin_id) == $admin->id_admin ? 'selected' : '' }}>
+                                        {{ old('id_admin', $transaksi->id_admin) == $admin->id_admin ? 'selected' : '' }}>
                                         {{ $admin->username }}
                                     </option>
                                 @endforeach

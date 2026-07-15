@@ -54,16 +54,18 @@
                             Rp {{ number_format($transaksi->total_bayar, 0, ',', '.') }}
                         </td>
                         <td>
-                            <a href="{{ route('transaksis.edit', $transaksi->id_transaksi) }}" class="btn btn-warning btn-sm">
-                                <i class="fas fa-edit"></i> Edit
-                            </a>
-                            <form action="{{ route('transaksis.destroy', $transaksi->id_transaksi) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin hapus transaksi ini? Stok akan dikembalikan.')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">
-                                    <i class="fas fa-trash"></i> Hapus
-                                </button>
-                            </form>
+                            <div class="d-flex align-items-center">
+                                <a href="{{ route('transaksis.edit', $transaksi->id_transaksi) }}" class="btn btn-warning btn-sm mr-2">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <form action="{{ route('transaksis.destroy', $transaksi->id_transaksi) }}" method="POST" class="d-inline m-0" onsubmit="return confirm('Yakin hapus transaksi ini? Stok akan dikembalikan.')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i> Hapus
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     @empty

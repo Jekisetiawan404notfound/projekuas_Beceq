@@ -6,11 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Transaksi extends Model
 {
+    protected $table      = 'transaksis';
+    protected $primaryKey = 'id_transaksi';
+    public    $timestamps = false;
+
     protected $fillable = [
         'id_pelanggan',
-        'pelanggan_id',
         'id_admin',
-        'admin_id',
         'tgl_transaksi',
         'total_bayar',
     ];
@@ -28,26 +30,5 @@ class Transaksi extends Model
     public function detail_transaksis()
     {
         return $this->hasMany(Detail_transaksi::class, 'id_transaksi', 'id_transaksi');
-    }
-
-    // Alias Accessors & Mutators
-    public function getPelangganIdAttribute()
-    {
-        return $this->attributes['id_pelanggan'] ?? null;
-    }
-
-    public function setPelangganIdAttribute($value)
-    {
-        $this->attributes['id_pelanggan'] = $value;
-    }
-
-    public function getAdminIdAttribute()
-    {
-        return $this->attributes['id_admin'] ?? null;
-    }
-
-    public function setAdminIdAttribute($value)
-    {
-        $this->attributes['id_admin'] = $value;
     }
 }

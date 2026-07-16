@@ -56,7 +56,7 @@
             return 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&q=80&w=600';
         }
         if (str_contains($merek, 'daihatsu')) {
-            return 'https://images.unsplash.com/photo-1525609004556-c46c7d6cf0a3?auto=format&fit=crop&q=80&w=600';
+            return 'https://images.classic.com/vehicles/0d515b023b3421e6c441bdb939557dbc.jpeg?ar=16:9&fit=crop&h=338&w=600';
         }
         return 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=600';
     }

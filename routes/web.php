@@ -26,16 +26,15 @@ Route::get('/', function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware(['admin'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+
     Route::resource('admins', AdminController::class);
     Route::resource('pelanggans', PelangganController::class);
-    Route::resource('kategori-mobils', KategoriMobilController::class);
-    Route::resource('mobils', MobilController::class);
     Route::resource('transaksis', TransaksiController::class);
     Route::resource('detail-transaksis', DetailTransaksiController::class);
-
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::resource('kategori-mobils', KategoriMobilController::class);
+    Route::resource('mobils', MobilController::class);
 });
 
 /*

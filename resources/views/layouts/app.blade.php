@@ -33,7 +33,7 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-car"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">Beceq Rent</div>
+                <div class="sidebar-brand-text mx-3"> McQueen Rent</div>
             </a>
 
             <!-- Divider -->
@@ -41,6 +41,11 @@
 
             <!-- Nav Item - Dashboard -->
             @if(Auth::guard('admin')->check())
+                @php
+                    $adminUser = Auth::guard('admin')->user();
+                    $isSuperAdmin = $adminUser && $adminUser->role === 'super_admin';
+                @endphp
+
                 <li class="nav-item {{ request()->routeIs('dashboard') || request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('admin.dashboard') }}">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
@@ -72,53 +77,55 @@
                     </a>
                 </li>
 
-                <!-- Divider -->
-                <hr class="sidebar-divider">
+                @if($isSuperAdmin)
+                    <!-- Divider -->
+                    <hr class="sidebar-divider">
 
-                <!-- Heading: Penyewaan & Pelanggan -->
-                <div class="sidebar-heading">
-                    Penyewaan &amp; Pelanggan
-                </div>
+                    <!-- Heading: Penyewaan & Pelanggan -->
+                    <div class="sidebar-heading">
+                        Penyewaan &amp; Pelanggan
+                    </div>
 
-                <!-- Nav Item - Pelanggan -->
-                <li class="nav-item {{ request()->routeIs('pelanggans.*') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('pelanggans.index') }}">
-                        <i class="fas fa-fw fa-users"></i>
-                        <span>Pelanggan</span>
-                    </a>
-                </li>
+                    <!-- Nav Item - Pelanggan -->
+                    <li class="nav-item {{ request()->routeIs('pelanggans.*') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('pelanggans.index') }}">
+                            <i class="fas fa-fw fa-users"></i>
+                            <span>Pelanggan</span>
+                        </a>
+                    </li>
 
-                <!-- Nav Item - Transaksi -->
-                <li class="nav-item {{ request()->routeIs('transaksis.*') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('transaksis.index') }}">
-                        <i class="fas fa-fw fa-file-invoice-dollar"></i>
-                        <span>Transaksi Sewa</span>
-                    </a>
-                </li>
+                    <!-- Nav Item - Transaksi -->
+                    <li class="nav-item {{ request()->routeIs('transaksis.*') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('transaksis.index') }}">
+                            <i class="fas fa-fw fa-file-invoice-dollar"></i>
+                            <span>Transaksi Sewa</span>
+                        </a>
+                    </li>
 
-                <!-- Nav Item - Detail Transaksi -->
-                <li class="nav-item {{ request()->routeIs('detail-transaksis.*') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('detail-transaksis.index') }}">
-                        <i class="fas fa-fw fa-list-alt"></i>
-                        <span>Detail Transaksi</span>
-                    </a>
-                </li>
+                    <!-- Nav Item - Detail Transaksi -->
+                    <li class="nav-item {{ request()->routeIs('detail-transaksis.*') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('detail-transaksis.index') }}">
+                            <i class="fas fa-fw fa-list-alt"></i>
+                            <span>Detail Transaksi</span>
+                        </a>
+                    </li>
 
-                <!-- Divider -->
-                <hr class="sidebar-divider">
+                    <!-- Divider -->
+                    <hr class="sidebar-divider">
 
-                <!-- Heading: Pengaturan -->
-                <div class="sidebar-heading">
-                    Pengaturan
-                </div>
+                    <!-- Heading: Pengaturan -->
+                    <div class="sidebar-heading">
+                        Pengaturan
+                    </div>
 
-                <!-- Nav Item - Admin -->
-                <li class="nav-item {{ request()->routeIs('admins.*') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('admins.index') }}">
-                        <i class="fas fa-fw fa-user-cog"></i>
-                        <span>Manajemen Admin</span>
-                    </a>
-                </li>
+                    <!-- Nav Item - Admin -->
+                    <li class="nav-item {{ request()->routeIs('admins.*') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('admins.index') }}">
+                            <i class="fas fa-fw fa-user-cog"></i>
+                            <span>Manajemen Admin</span>
+                        </a>
+                    </li>
+                @endif
             @elseif(Auth::guard('pelanggan')->check())
                 <li class="nav-item {{ request()->routeIs('pelanggan.dashboard') || request()->routeIs('pelanggan.transaksi.create') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('pelanggan.dashboard') }}">
@@ -170,16 +177,18 @@
                     </button>
 
                     <!-- Topbar Search -->
-                    <form method="GET" action="{{ route('pelanggan.dashboard') }}" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" name="search" value="{{ request('search') }}" class="form-control bg-light border-0 small" placeholder="Cari mobil..." aria-label="Cari mobil" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="submit">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
+                    @if(Auth::guard('pelanggan')->check())
+                        <form method="GET" action="{{ route('pelanggan.dashboard') }}" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                            <div class="input-group">
+                                <input type="text" name="search" value="{{ request('search') }}" class="form-control bg-light border-0 small" placeholder="Cari mobil..." aria-label="Cari mobil" aria-describedby="basic-addon2">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="fas fa-search fa-sm"></i>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    @endif
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
